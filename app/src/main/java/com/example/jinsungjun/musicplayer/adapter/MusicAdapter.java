@@ -20,6 +20,7 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.Holder> {
     List<Music> musicList;
 
     public MusicAdapter(List<Music> musicList) {
+        //MainActivity에서 인스턴스를 생성하여 MusicLoader 클래스에서 생성된 데이터 리스트를 가져온다
         this.musicList = musicList;
     }
 
@@ -46,7 +47,7 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.Holder> {
 
         private ImageView albumArt;
         private TextView textTitle, textArtist, textDuration;
-        private ImageButton btnPlay;
+        private ImageButton btnPlay,btnPause;
         //사용하는 domain 클래스를 홀더에 담아주면 편하다
         private Music music;
 
@@ -56,15 +57,14 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.Holder> {
             textTitle = itemView.findViewById(R.id.textTitle);
             textArtist = itemView.findViewById(R.id.textArtist);
             textDuration = itemView.findViewById(R.id.textDuration);
-            btnPlay = itemView.findViewById(R.id.btnPlay);
 
-            btnPlay.setOnClickListener(new View.OnClickListener() {
+            itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    play(view.getContext());
 
                 }
             });
+
         }
 
         private void setMusic(Music music) {
@@ -89,15 +89,10 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.Holder> {
 
         private void setDuration() {
 
-            String m = "";
-            String s = "";
-            textDuration.setText(music.duration + "");
-        }
-
-        private void play(Context context) {
-            Player.set(context,music.music_uri);
-            Player.play();
-
+            //음원 재생 시간 구하기
+            String seconds = String.valueOf((music.duration % 60000) / 1000); //분
+            String minutes = String.valueOf(music.duration / 60000); //초
+            textDuration.setText(minutes+":"+seconds);
         }
     }
 

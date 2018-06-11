@@ -69,7 +69,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
                     if (grant != PackageManager.PERMISSION_GRANTED) {
                         Toast.makeText(this, "해당 어플을 사용하려면 권한이 필요합니다.", Toast.LENGTH_LONG).show();
-                        finish();
+                        finish(); //앱 종료
                         break;
                     }
                 }
