@@ -15,6 +15,8 @@ public class Music {
     public Uri albumart_uri;
     public Uri music_uri;
 
+    //다시 보기
+
     public void setMusicUri() {
 
         Uri contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;

@@ -1,6 +1,8 @@
 package com.example.jinsungjun.musicplayer.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +11,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.jinsungjun.musicplayer.Const;
+import com.example.jinsungjun.musicplayer.PlayerActivity;
 import com.example.jinsungjun.musicplayer.R;
 import com.example.jinsungjun.musicplayer.domain.Music;
 import com.example.jinsungjun.musicplayer.domain.Player;
@@ -36,6 +40,7 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.Holder> {
 
         Music music = musicList.get(position);
         holder.setMusic(music);
+        holder.position = position;
     }
 
     @Override
@@ -45,11 +50,12 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.Holder> {
 
     public class Holder extends RecyclerView.ViewHolder {
 
-        private ImageView albumArt;
-        private TextView textTitle, textArtist, textDuration;
-        private ImageButton btnPlay,btnPause;
+        ImageView albumArt;
+        TextView textTitle, textArtist, textDuration;
         //사용하는 domain 클래스를 홀더에 담아주면 편하다
-        private Music music;
+        Music music;
+        int position;
+
 
         public Holder(View itemView) {
             super(itemView);
@@ -58,10 +64,13 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.Holder> {
             textArtist = itemView.findViewById(R.id.textArtist);
             textDuration = itemView.findViewById(R.id.textDuration);
 
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    Intent intent = new Intent(view.getContext(), PlayerActivity.class);
+                    intent.putExtra(Const.POSITION,position);
+                    view.getContext().startActivity(intent);
                 }
             });
 
@@ -92,7 +101,7 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.Holder> {
             //음원 재생 시간 구하기
             String seconds = String.valueOf((music.duration % 60000) / 1000); //분
             String minutes = String.valueOf(music.duration / 60000); //초
-            textDuration.setText(minutes+":"+seconds);
+            textDuration.setText(minutes + ":" + seconds);
         }
     }
 

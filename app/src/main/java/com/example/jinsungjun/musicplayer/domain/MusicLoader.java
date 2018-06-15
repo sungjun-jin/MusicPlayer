@@ -12,6 +12,7 @@ import java.util.List;
 public class MusicLoader {
 
     //Singleton 사용
+    //모든 프로그램에서 하나의 인스턴스만 사용할 때
     private static List<Music> musicList = null;
 
     public static List<Music> getMusic(Context context) {
@@ -47,10 +48,6 @@ public class MusicLoader {
                     Music music = new Music();
 
                     music.id = getColumnString(cursor, projections[0]);
-                    /*
-                    int index = cursor.getColumnIndex(projections[0]);
-                    music.id = cursor.getString(index);
-                     */
                     music.title = getColumnString(cursor, projections[1]);
                     music.artist = getColumnString(cursor, projections[2]);
                     music.albumart_id = getColumnString(cursor, projections[3]);

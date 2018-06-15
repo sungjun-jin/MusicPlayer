@@ -14,15 +14,16 @@ import java.util.List;
 
 public class PlayerAdapter extends PagerAdapter {
 
-    List<Music> data;
+    List<Music> musicList;
 
-    public PlayerAdapter(List<Music> data) {
-        this.data = data;
+    public PlayerAdapter(List<Music> musicList) {
+        //데이터 로딩
+        this.musicList = musicList;
     }
 
     @Override
     public int getCount() {
-        return data.size();
+        return musicList.size();
     }
 
 
@@ -37,19 +38,21 @@ public class PlayerAdapter extends PagerAdapter {
         TextView textArtist = view.findViewById(R.id.textArtist);
         TextView textTitle = view.findViewById(R.id.textTitle);
         //3. 데이터 세팅
-        Music music = data.get(position);
+        Music music = musicList.get(position);
+        //4. 위젯, 텍스트뷰 세팅
         imageView.setImageURI(music.albumart_uri);
         textTitle.setText(music.title);
         textArtist.setText(music.artist);
 
         container.addView(view);
+
         return view;
     }
 
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-//        super.destroyItem(container, position, object);
+//      super.destroyItem(container, position, object);
         container.removeView((View) object);
     }
 
