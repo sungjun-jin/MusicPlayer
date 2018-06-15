@@ -1,13 +1,10 @@
 package com.example.jinsungjun.musicplayer.adapter;
 
-import android.content.Context;
 import android.content.Intent;
-import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,13 +12,14 @@ import com.example.jinsungjun.musicplayer.Const;
 import com.example.jinsungjun.musicplayer.PlayerActivity;
 import com.example.jinsungjun.musicplayer.R;
 import com.example.jinsungjun.musicplayer.domain.Music;
-import com.example.jinsungjun.musicplayer.domain.Player;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.Holder> {
 
-    List<Music> musicList;
+    private List<Music> musicList;
+    SimpleDateFormat sdf = new SimpleDateFormat("mm:ss");
 
     public MusicAdapter(List<Music> musicList) {
         //MainActivity에서 인스턴스를 생성하여 MusicLoader 클래스에서 생성된 데이터 리스트를 가져온다
@@ -97,11 +95,7 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.Holder> {
         }
 
         private void setDuration() {
-
-            //음원 재생 시간 구하기
-            String seconds = String.valueOf((music.duration % 60000) / 1000); //분
-            String minutes = String.valueOf(music.duration / 60000); //초
-            textDuration.setText(minutes + ":" + seconds);
+            textDuration.setText(sdf.format(music.duration));
         }
     }
 

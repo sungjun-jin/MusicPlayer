@@ -14,10 +14,10 @@ import com.example.jinsungjun.musicplayer.domain.Music;
 import com.example.jinsungjun.musicplayer.domain.MusicLoader;
 import com.example.jinsungjun.musicplayer.domain.Player;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class PlayerActivity extends AppCompatActivity implements View.OnClickListener {
-
 
 
     //ViewPager 1개의 page 번호
@@ -30,6 +30,8 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
     SeekBar seekBar;
     TextView textDuration, textCurrent;
     ImageButton btnPlay;
+
+    SimpleDateFormat sdf = new SimpleDateFormat("mm:ss");
 
 
     @Override
@@ -46,7 +48,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
         //ViewPager 세팅
         viewPager.setAdapter(adapter);
         Intent intent = getIntent();
-        position = intent.getIntExtra(Const.POSITION,0);
+        position = intent.getIntExtra(Const.POSITION, 0);
         viewPager.setCurrentItem(position);
 
 
@@ -56,6 +58,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
 
     }
 
+    //ViewPage Listener
     private void setViewPagerListener() {
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -85,14 +88,14 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
 
         //Player Status 상태의 따라 재생상태를 변경
         music = musicList.get(position);
-        setCurrent(0);
-        Player.set(this,music.music_uri);
+        Player.set(this, music.music_uri);
         setDuration(music.duration);
         //seekbar 세팅
-        seekBar.setMax((int)music.duration);
+        seekBar.setMax((int) music.duration);
         Player.setSeekbar(new Player.SeekbarCallback() {
             @Override
             public void setSeekbar(final int position) {
+
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -102,9 +105,10 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
                 });
             }
         });
-        if(Player.status == Player.PLAY) {
+
+        if (Player.status == Player.PLAY) {
             Player.play();
-        } else if(Player.status == Player.EMPTY || Player.status == Player.PAUSE) {
+        } else if (Player.status == Player.EMPTY || Player.status == Player.PAUSE) {
             Player.status = Player.STOP;
         }
 
@@ -112,18 +116,13 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
 
     private void setDuration(long duration) {
         //나중에 sdf로 고치기
-
         //음원 재생 시간 구하기
-        String seconds = String.valueOf((duration % 60000) / 1000); //분
-        String minutes = String.valueOf(duration / 60000); //초
-        textDuration.setText(minutes + ":" + seconds);
+        textDuration.setText(sdf.format(duration));
     }
 
     private void setCurrent(long current) {
-
-        String seconds = String.valueOf((current % 60000) / 1000); //분
-        String minutes = String.valueOf(current / 60000); //초
-        textCurrent.setText(minutes + ":" + seconds);
+        //현재 음원 재생 시간 구하기
+        textCurrent.setText(sdf.format(current));
     }
 
     private void setView() {
@@ -146,29 +145,28 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
     public void onClick(View view) {
 
         switch (view.getId()) {
-            case R.id.btnPlay :
-                if(Player.status == Player.PAUSE || Player.status == Player.STOP) {
+            case R.id.btnPlay:
+                if (Player.status == Player.PAUSE || Player.status == Player.STOP) {
                     Player.play();
                     // 버튼의 이미지 리소스 변경
                     btnPlay.setImageResource(android.R.drawable.ic_media_pause);
-                } else if(Player.status == Player.PLAY) {
+                } else if (Player.status == Player.PLAY) {
                     btnPlay.setImageResource(android.R.drawable.ic_media_play);
                     Player.pause();
                 }
-
                 break;
-            case R.id.btnFF :
+            case R.id.btnFF:
                 break;
-            case R.id.btnNext :
-                if(position < musicList.size())
-                position++;
+            case R.id.btnNext:
+                if (position < musicList.size())
+                    position++;
                 viewPager.setCurrentItem(position);
                 break;
-            case R.id.btnRew :
+            case R.id.btnRew:
                 break;
-            case R.id.btnPreview :
-                if(position > 0)
-                position--;
+            case R.id.btnPreview:
+                if (position > 0)
+                    position--;
                 viewPager.setCurrentItem(position);
                 break;
         }

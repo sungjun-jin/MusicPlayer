@@ -45,11 +45,10 @@ public class Player {
         //음원이 없는 경우를 대비해 null처리를 해준다
 
         if (mediaPlayer != null) {
-
             mediaPlayer.start();
             if (!seekBarThread.running)
                 seekBarThread.start();
-                status = PLAY;
+            status = PLAY;
         }
 
     }
@@ -59,15 +58,6 @@ public class Player {
             mediaPlayer.pause();
             status = PAUSE;
         }
-    }
-
-    public static long getCurrent() {
-
-        if (mediaPlayer != null) {
-            //구간을 넘겨줄 수 있다.
-            return mediaPlayer.getCurrentPosition();
-        }
-        return 0;
     }
 
 
@@ -83,17 +73,18 @@ public class Player {
         Player.seekbarCallback = null;
     }
 
+    private static boolean runFlag = true;
 
     public static class SeekBarThread extends Thread {
 
-        boolean runFlag = true;
-        public boolean running = false;
+        boolean running = false;
 
         @Override
         public void run() {
 
-            while (runFlag) {
+            running = true;
 
+            while (runFlag) {
                 try {
                     if (mediaPlayer == null)
                         break;
@@ -105,10 +96,12 @@ public class Player {
                     e.printStackTrace();
                 }
             }
+
             running = false;
         }
 
         public void stopThread() {
+            
             runFlag = false;
         }
     }
